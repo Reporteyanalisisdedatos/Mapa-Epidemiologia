@@ -928,6 +928,44 @@
             margin-left: 8px;
             flex-shrink: 0;
         }
+        #btn-red-atencion-dir {
+            margin: 4px 14px 8px;
+            padding: 9px 0;
+            background: linear-gradient(135deg, #005288 0%, #0070b8 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            width: calc(100% - 28px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: opacity 0.15s;
+            flex-shrink: 0;
+        }
+        #btn-red-atencion-dir:hover { opacity: 0.88; }
+        #panel-red-dir {
+            display: none;
+            margin: 0 14px 12px;
+            border: 0.5px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        #panel-red-dir .red-titulo {
+            background: #f0f7ff;
+            padding: 6px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #005288;
+            border-bottom: 0.5px solid #e0e0e0;
+        }
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
@@ -1137,6 +1175,11 @@
                 <div class="panel-dir-section-title">Centros de Salud más cercanos</div>
                 <div id="panel-dir-cs-lista"></div>
             </div>
+        </div>
+        <button id="btn-red-atencion-dir">🔗 Red de atención</button>
+        <div id="panel-red-dir">
+            <div class="red-titulo">Establecimientos vinculados al CS más cercano</div>
+            <div id="panel-red-dir-lista"></div>
         </div>
     </div>
 
@@ -2511,12 +2554,23 @@
                     });
                 }
 
+                // Guardar CS más cercano en el botón de red de atención
+                const btnRed = document.getElementById('btn-red-atencion-dir');
+                btnRed._csCercano = cs.length > 0 ? cs[0].nombre : null;
+                // Resetear panel red al abrir nuevo resultado
+                document.getElementById('panel-red-dir').style.display = 'none';
+                document.getElementById('panel-red-dir-lista').innerHTML = '';
+                if (capaRedAtencion) { map.removeLayer(capaRedAtencion); capaRedAtencion = null; }
+
                 panelResult.style.display = 'flex';
             }
 
             function limpiar() {
                 if (markerPersona) { map.removeLayer(markerPersona); markerPersona = null; }
+                if (capaRedAtencion) { map.removeLayer(capaRedAtencion); capaRedAtencion = null; }
                 panelResult.style.display = 'none';
+                document.getElementById('panel-red-dir').style.display = 'none';
+                document.getElementById('panel-red-dir-lista').innerHTML = '';
                 inputDir.value = '';
                 btnLimpiar.style.display = 'none';
                 msgEl.style.display = 'none';
@@ -2553,6 +2607,12 @@
                         .addTo(map)
                         .bindTooltip(displayName, { direction: 'top', offset: [0, -46] });
 
+                    // Guardar datos en el marker para reabrirlos al hacer click
+                    markerPersona._dirData = { lat, lng, displayName };
+                    markerPersona.on('click', function() {
+                        mostrarPanel(this._dirData.lat, this._dirData.lng, this._dirData.displayName);
+                    });
+
                     map.setView([lat, lng], 15);
                     btnLimpiar.style.display = 'block';
                     mostrarPanel(lat, lng, displayName);
@@ -2570,6 +2630,76 @@
             inputDir.addEventListener('keydown', e => { if (e.key === 'Enter') buscarDireccion(); });
             btnLimpiar.addEventListener('click', limpiar);
             panelClose.addEventListener('click', limpiar);
+
+            // ── Botón Red de atención del panel dirección ──────────────────
+            const btnRedDir  = document.getElementById('btn-red-atencion-dir');
+            const panelRedDir = document.getElementById('panel-red-dir');
+            const listaRedDir = document.getElementById('panel-red-dir-lista');
+
+            btnRedDir.addEventListener('click', function() {
+                // Toggle
+                if (panelRedDir.style.display === 'block') {
+                    panelRedDir.style.display = 'none';
+                    if (capaRedAtencion) { map.removeLayer(capaRedAtencion); capaRedAtencion = null; }
+                    return;
+                }
+
+                // Obtener el CS más cercano (primero de la lista)
+                const csCercano = btnRedDir._csCercano;
+                if (!csCercano) {
+                    listaRedDir.innerHTML = '<div style="font-size:12px;color:#aaa;text-align:center;padding:8px;">Sin centro de salud cercano detectado</div>';
+                    panelRedDir.style.display = 'block';
+                    return;
+                }
+
+                // Buscar establecimientos vinculados al CS más cercano
+                const nombreCS = normalizar(csCercano);
+                const vinculados = establecimientosData.filter(d =>
+                    normalizar(d.institucion || '') === nombreCS
+                );
+
+                listaRedDir.innerHTML = '';
+
+                if (vinculados.length === 0) {
+                    listaRedDir.innerHTML = '<div style="font-size:12px;color:#aaa;text-align:center;padding:8px;">Sin establecimientos vinculados para este CS</div>';
+                } else {
+                    const porTipo = {};
+                    vinculados.forEach(d => {
+                        const t = d.tipo || 'Otro';
+                        if (!porTipo[t]) porTipo[t] = [];
+                        porTipo[t].push(d);
+                    });
+                    Object.entries(porTipo).sort().forEach(([tipo, items]) => {
+                        const tipoDiv = document.createElement('div');
+                        tipoDiv.style.cssText = 'font-size:10px;font-weight:700;text-transform:uppercase;color:#888;margin:6px 8px 3px;';
+                        tipoDiv.textContent = tipo;
+                        listaRedDir.appendChild(tipoDiv);
+                        items.forEach(d => {
+                            const div = document.createElement('div');
+                            div.className = 'red-item';
+                            div.innerHTML = `<div class="red-item-nombre">${d.centro || 'S/D'}</div><div class="red-item-tipo">${d.direccion || ''}</div>`;
+                            listaRedDir.appendChild(div);
+                        });
+                    });
+                }
+
+                panelRedDir.style.display = 'block';
+
+                // Mostrar en el mapa
+                if (capaRedAtencion) { map.removeLayer(capaRedAtencion); }
+                capaRedAtencion = L.layerGroup();
+                const iconoRed = L.divIcon({
+                    className: '',
+                    html: `<div style="width:14px;height:14px;border-radius:50%;background:#FFDA63;border:2.5px solid #005288;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>`,
+                    iconSize: [14,14], iconAnchor: [7,7]
+                });
+                vinculados.filter(d => d.lat && d.lng).forEach(d => {
+                    const mk = L.marker([d.lat, d.lng], { icon: iconoRed });
+                    mk.bindTooltip(`<b>${d.centro}</b><br>${d.tipo || ''}`, { direction:'top', offset:[0,-8] });
+                    capaRedAtencion.addLayer(mk);
+                });
+                capaRedAtencion.addTo(map);
+            });
         })();
     </script>
 
