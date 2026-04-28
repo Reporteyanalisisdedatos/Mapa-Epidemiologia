@@ -764,6 +764,171 @@
             100% { opacity: 0; }
         }
 
+        /* ========== BUSCADOR DIRECCIÓN ========== */
+        .search-dir-container {
+            padding: 8px 12px 10px 12px;
+            background: #FAFAFC;
+            flex-shrink: 0;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+        }
+        .search-dir-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .search-dir-row {
+            display: flex;
+            gap: 6px;
+        }
+        #search-direccion {
+            flex: 1;
+            padding: 9px 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            color: #333;
+            box-sizing: border-box;
+        }
+        #search-direccion:focus {
+            outline: none;
+            border-color: #DC3545;
+            box-shadow: 0 0 0 2px rgba(220,53,69,0.15);
+        }
+        #btn-buscar-dir {
+            padding: 9px 14px;
+            background: #DC3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: opacity 0.2s;
+        }
+        #btn-buscar-dir:hover { opacity: 0.85; }
+        #btn-buscar-dir:disabled { opacity: 0.5; cursor: default; }
+        #btn-limpiar-dir {
+            padding: 9px 10px;
+            background: #e9ecef;
+            color: #555;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: none;
+            transition: background 0.2s;
+        }
+        #btn-limpiar-dir:hover { background: #dee2e6; }
+        #search-dir-msg {
+            font-size: 11px;
+            color: #DC3545;
+            margin-top: 4px;
+            display: none;
+        }
+
+        /* ========== PANEL FLOTANTE RESULTADO DIRECCIÓN ========== */
+        #panel-direccion-resultado {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 30px rgba(0,0,0,0.22);
+            font-family: 'Inter', sans-serif;
+            z-index: 1200;
+            width: 300px;
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+            flex-direction: column;
+        }
+        .panel-dir-header {
+            background: linear-gradient(135deg, #DC3545 0%, #b02030 100%);
+            color: white;
+            padding: 12px 14px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-shrink: 0;
+        }
+        .panel-dir-titulo {
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.3;
+            flex: 1;
+            padding-right: 8px;
+        }
+        .panel-dir-close {
+            cursor: pointer;
+            font-size: 16px;
+            opacity: 0.8;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .panel-dir-close:hover { opacity: 1; }
+        .panel-dir-body {
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .panel-dir-badge-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .panel-dir-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .panel-dir-section-title {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #888;
+            margin-bottom: 4px;
+        }
+        .panel-dir-cs-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 10px;
+            background: #f8f9fa;
+            border-radius: 7px;
+            border: 0.5px solid #e8eaed;
+            margin-bottom: 4px;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .panel-dir-cs-item:hover { border-color: #005288; background: #eaf4fb; }
+        .panel-dir-cs-nombre {
+            font-size: 12px;
+            font-weight: 600;
+            color: #222;
+            flex: 1;
+        }
+        .panel-dir-cs-dist {
+            font-size: 11px;
+            color: #888;
+            font-weight: 500;
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             .sidebar {
@@ -808,6 +973,17 @@
             <input type="text" id="search-efector" placeholder="🔍  Buscar efector..." />
         </div>
 
+        <!-- Buscador de dirección -->
+        <div class="search-dir-container">
+            <div class="search-dir-label">📍 Buscar por dirección</div>
+            <div class="search-dir-row">
+                <input type="text" id="search-direccion" placeholder="Ej: San Juan 1234" />
+                <button id="btn-buscar-dir" title="Buscar">🔍</button>
+                <button id="btn-limpiar-dir" title="Limpiar">✕</button>
+            </div>
+            <div id="search-dir-msg"></div>
+        </div>
+
         <!-- Leyenda de iconos -->
         <div class="leyenda-container">
             <div class="leyenda-title">Referencias</div>
@@ -834,22 +1010,6 @@
         <!-- Filtros scrollables -->
         <div class="filters-container">
 
-            <!-- Filtros Provincia -->
-            <div class="filter-section">
-                <div class="filter-header">
-                    <span class="filter-icon">🗺️</span>
-                    Nivel Provincia
-                </div>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="chkDEPARTAMENTOS" />
-                    Departamentos
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="chkLOCALIDADES" />
-                    Localidades
-                </label>
-            </div>
-
             <!-- Filtros Capital -->
             <div class="filter-section">
                 <div class="filter-header">
@@ -875,18 +1035,6 @@
                     <option value="all">Todas las Zonas</option>
                 </select>
 
-                <label class="checkbox-label">
-                    <input type="checkbox" id="chkCIRCUITO" />
-                    Circuitos
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="chkSECCIONALES" />
-                    Seccionales
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="chkENTEMETROPOLITANO" />
-                    Ente Metropolitano
-                </label>
                 <label class="checkbox-label">
                     <input type="checkbox" id="chkAP" />
                     Áreas Programáticas
@@ -928,6 +1076,10 @@
                 <span class="panel-close" id="panel-close">✕</span>
             </div>
             <div class="panel-direccion" id="panel-direccion">-</div>
+            <div id="panel-horario" style="display:none;padding:4px 14px 8px;font-size:12px;color:#444;border-bottom:0.5px solid #eee;flex-shrink:0;">
+                <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:#888;">🕐 Horario: </span>
+                <span id="panel-horario-texto"></span>
+            </div>
             <!-- Comparativa poblacional CS / Zona / Capital -->
             <div id="panel-pob-contexto" style="display:none;padding:8px 14px;border-bottom:0.5px solid #eee;flex-shrink:0;">
                 <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:#555;margin-bottom:7px;">Contexto Poblacional</div>
@@ -955,28 +1107,16 @@
                 <div style="display:none;" id="panel-nbi"></div>
                 <div style="display:none;" id="panel-sincobertura"></div>
             </div>
-            <div class="panel-stats">
-                <div class="panel-stat-card">
-                    <div class="panel-stat-label">Total de Atenciones</div>
-                    <div class="panel-stat-value" id="panel-atenciones">-</div>
-                </div>
-                <div class="panel-stat-card">
-                    <div class="panel-stat-label">Total de Pacientes</div>
-                    <div class="panel-stat-value" id="panel-pacientes">-</div>
-                </div>
-            </div>
+            <div id="panel-atenciones" style="display:none;"></div>
+            <div id="panel-pacientes" style="display:none;"></div>
             <button id="btn-red-atencion">🔗 Red de atención</button>
             <div id="panel-red">
                 <div class="red-titulo">Establecimientos vinculados</div>
                 <div id="panel-red-lista"></div>
             </div>
             <div class="panel-servicios">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid #005288;">
+                <div style="margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid #005288;">
                     <div class="panel-servicios-titulo" style="margin-bottom:0;border-bottom:none;">Servicios</div>
-                    <div style="display:flex;gap:24px;">
-                        <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#005288;">Atenciones</span>
-                        <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#005288;">Pacientes</span>
-                    </div>
                 </div>
                 <div id="panel-servicios-lista"></div>
             </div>
@@ -984,6 +1124,21 @@
 
     </div>
     <!-- /sidebar -->
+
+    <!-- Panel resultado búsqueda dirección -->
+    <div id="panel-direccion-resultado">
+        <div class="panel-dir-header">
+            <div class="panel-dir-titulo" id="panel-dir-titulo">Dirección encontrada</div>
+            <span class="panel-dir-close" id="panel-dir-close">✕</span>
+        </div>
+        <div class="panel-dir-body">
+            <div class="panel-dir-badge-row" id="panel-dir-badges"></div>
+            <div id="panel-dir-cs-wrap">
+                <div class="panel-dir-section-title">Centros de Salud más cercanos</div>
+                <div id="panel-dir-cs-lista"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Panel info zona individual -->
     <div id="zona-info">
@@ -1020,9 +1175,11 @@
         let tiposSeleccionados = new Set();
         let atencionesData = [];
         let serviciosData = [];
+        let horariosData = [];
         let apData = [];
         let capaRedAtencion = null;
         let markerSeleccionado = null;
+        let markerPersona = null;
         const capas = {};
         const capasLabels = {};
         let allZonasFeatures = [];
@@ -1038,9 +1195,10 @@
 
         let datosZonasPoblacion = [];
 
+        let map;
         document.addEventListener("DOMContentLoaded", () => {
 
-            const map = L.map('map', {
+            map = L.map('map', {
                 center: [-31.42, -64.18],
                 zoom: 13,
                 minZoom: 12,
@@ -1195,7 +1353,40 @@
             fetch("./data/centros_horarios.json")
                 .then(r => r.ok ? r.json() : Promise.reject('404'))
                 .then(data => {
-                    establecimientosData = (data.data || []).filter(d => d.lat && d.lng);
+                    const todos = (data.data || []).filter(d => d.lat && d.lng);
+
+                    // Medicina Preventiva → agregar como efector principal
+                    const medPrev = todos.filter(d =>
+                        (d.tipo || '').toLowerCase() === 'medicina preventiva'
+                    );
+                    medPrev.forEach(d => {
+                        efectoresData = efectoresData || [];
+                        // Evitar duplicados
+                        const yaExiste = efectoresData.some(e => (e.properties?.Centro || '') === d.centro);
+                        if (!yaExiste) {
+                            efectoresData.push({
+                                type: 'Feature',
+                                geometry: { type: 'Point', coordinates: [d.lng, d.lat] },
+                                properties: {
+                                    Centro: d.centro || 'Medicina Preventiva',
+                                    Tipo: d.tipo || 'Medicina Preventiva',
+                                    Direccion: d.direccion || '',
+                                    institucion: d.institucion || '',
+                                    PoblacionTotal: 0, Mujeres: 0, Varones: 0,
+                                    PoblacionSinCobertura: 0, PorcentajeSinCobertura: '0%',
+                                    Hogares: 0, HogaresNBI: 0, Zona: null
+                                }
+                            });
+                        }
+                    });
+                    if (medPrev.length > 0 && capaEfectores) {
+                        mostrarTodosEfectores(); // redibujar con Medicina Preventiva
+                    }
+
+                    // Excluir Medicina Preventiva del filtro de establecimientos
+                    establecimientosData = todos.filter(d =>
+                        (d.tipo || '').toLowerCase() !== 'medicina preventiva'
+                    );
                     inicializarFiltroEstablecimientos();
                 })
                 .catch(() => { console.warn('centros_horarios.json no disponible.'); });
@@ -1221,6 +1412,14 @@
                     console.log('✅ servicios cargados:', serviciosData.length);
                 })
                 .catch(() => { console.warn('servicios_centros.json no disponible.'); });
+
+            fetch("./data/HorariosEfectores.json")
+                .then(r => r.ok ? r.json() : Promise.reject('404'))
+                .then(data => {
+                    horariosData = data.data || [];
+                    console.log('✅ horarios cargados:', horariosData.length);
+                })
+                .catch(() => { console.warn('HorariosEfectores.json no disponible.'); });
 
             fetch("./layers/AP.json")
                 .then(r => r.ok ? r.json() : Promise.reject('404'))
@@ -1500,11 +1699,6 @@
             /* ============================
                TOGGLES CAPAS
             ============================ */
-            document.getElementById('chkCIRCUITO').onchange = e => toggleLayer('CIRCUITO', e.target.checked);
-            document.getElementById('chkSECCIONALES').onchange = e => toggleLayer('SECCIONALES', e.target.checked);
-            document.getElementById('chkENTEMETROPOLITANO').onchange = e => toggleLayer('ENTEMETROPOLITANO', e.target.checked);
-            document.getElementById('chkDEPARTAMENTOS').onchange = e => toggleLayer('DEPARTAMENTOS', e.target.checked);
-            document.getElementById('chkLOCALIDADES').onchange = e => toggleLayer('LOCALIDADES', e.target.checked);
             document.getElementById('chkAP').onchange = e => toggleLayer('AP', e.target.checked);
 
             function toggleLayer(nombre, visible) {
@@ -1538,6 +1732,12 @@
                     return denom === nombrePart || denom.includes(nombrePart) || nombrePart.includes(denom);
                 }) || null;
             }
+
+            // Efectores a excluir del mapa (dejaron de existir)
+            const efectoresExcluidos = [
+                'secretaria de prev. y atenc. comunitaria',
+                'secretaría de prev. y atenc. comunitaria',
+            ];
 
             const nombresEspecialesList = [
                 'medicina preventiva','dem','secretaría de salud','secretaria de salud',
@@ -1676,6 +1876,9 @@
                 efectoresData.forEach(feature => {
                     const coords = feature.geometry?.coordinates;
                     if (!coords) return;
+                    // Excluir efectores que dejaron de existir
+                    const nomCheck = (feature.properties?.Centro || '').toLowerCase();
+                    if (efectoresExcluidos.some(ex => nomCheck.includes(ex))) return;
                     const key = `${coords[0].toFixed(6)}|${coords[1].toFixed(6)}`;
                     if (!agrupados[key]) agrupados[key] = [];
                     agrupados[key].push(feature);
@@ -1957,15 +2160,44 @@
                 const totalAtenciones = atencionCentro.reduce((s, d) => s + (d.atenciones || 0), 0);
                 const totalPacientes  = atencionCentro.reduce((s, d) => s + (d.pacientes  || 0), 0);
 
-                // Buscar servicios del centro
-                const serviciosCentro = serviciosData.filter(d =>
+                // Buscar servicios del centro con reglas SOM
+                let serviciosCentro = serviciosData.filter(d =>
                     (d.Centro || '').trim() === nombreNorm
                 );
+
+                // SOM San Martín (no 24hs) → excluir URG
+                if (nombreNorm === 'SOM Servicio Odontologico Municipal' &&
+                    (direccion || '').toLowerCase().includes('san mart')) {
+                    serviciosCentro = serviciosCentro.filter(s =>
+                        (s.Servicio || '').toUpperCase() !== 'URG'
+                    );
+                }
+                // SOM 24hs (Colón) → mostrar solo URG
+                if (nombreNorm === 'SOM Servicio Odontologico Municipal 24hs') {
+                    serviciosCentro = serviciosCentro.length === 0
+                        ? serviciosData.filter(d =>
+                            (d.Centro || '').trim() === 'SOM Servicio Odontologico Municipal' &&
+                            (d.Servicio || '').toUpperCase() === 'URG'
+                          )
+                        : serviciosCentro;
+                }
 
                 // Poblar panel
                 document.getElementById('panel-nombre').textContent    = nombreNorm || 'S/D';
                 // panel-subtitulo reemplazado por badges
                 document.getElementById('panel-direccion').textContent  = direccion || 'Sin dirección registrada';
+
+                // Horario
+                const horarioEntry = horariosData.find(h =>
+                    (h.Centro || '').trim().toLowerCase() === nombreNorm.toLowerCase()
+                );
+                const panelHorario = document.getElementById('panel-horario');
+                if (horarioEntry && horarioEntry.Horario) {
+                    document.getElementById('panel-horario-texto').textContent = horarioEntry.Horario;
+                    panelHorario.style.display = 'block';
+                } else {
+                    panelHorario.style.display = 'none';
+                }
 
                 // Guardar nombre para Red de atención
                 document.getElementById('btn-red-atencion')._centroNombre = nombreNorm;
@@ -1984,20 +2216,11 @@
                     lista.innerHTML = '<div style="font-size:11px;color:#aaa;text-align:center;padding:10px;">Sin datos de servicios</div>';
                 } else {
                     serviciosCentro
-                        .sort((a, b) => (b.atenciones_servicio || 0) - (a.atenciones_servicio || 0))
+                        .sort((a, b) => (a.Servicio || '').localeCompare(b.Servicio || '', 'es'))
                         .forEach(s => {
                             const div = document.createElement('div');
                             div.className = 'panel-servicio-item';
-                            div.innerHTML = `
-                                <span class="panel-servicio-nombre">${s.Servicio || 'S/D'}</span>
-                                <div class="panel-servicio-stats">
-                                    <div class="panel-servicio-stat">
-                                        <span class="panel-servicio-stat-value">${(s.atenciones_servicio || 0).toLocaleString('es-AR')}</span>
-                                    </div>
-                                    <div class="panel-servicio-stat">
-                                        <span class="panel-servicio-stat-value">${(s.pacientes_servicio || 0).toLocaleString('es-AR')}</span>
-                                    </div>
-                                </div>`;
+                            div.innerHTML = `<span class="panel-servicio-nombre">${s.Servicio || 'S/D'}</span>`;
                             lista.appendChild(div);
                         });
                 }
@@ -2118,6 +2341,236 @@
             });
 
         }); // DOMContentLoaded
+
+        /* ============================
+           BUSCADOR DE DIRECCIÓN
+        ============================ */
+        (function() {
+            const inputDir    = document.getElementById('search-direccion');
+            const btnBuscar   = document.getElementById('btn-buscar-dir');
+            const btnLimpiar  = document.getElementById('btn-limpiar-dir');
+            const msgEl       = document.getElementById('search-dir-msg');
+            const panelResult = document.getElementById('panel-direccion-resultado');
+            const panelClose  = document.getElementById('panel-dir-close');
+
+            // Icono Persona
+            const iconoPersona = L.icon({
+                iconUrl: './assets/Persona.png',
+                iconSize: [46, 46],
+                iconAnchor: [23, 46],
+                popupAnchor: [0, -46]
+            });
+
+            // Haversine distance en km
+            function distanciaKm(lat1, lng1, lat2, lng2) {
+                const R = 6371;
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLng = (lng2 - lng1) * Math.PI / 180;
+                const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            }
+
+            // Point in polygon (ray casting)
+            function pointInPolygon(lat, lng, coordinates) {
+                // coordinates puede ser anidado (Polygon o MultiPolygon)
+                const ring = Array.isArray(coordinates[0][0]) ? coordinates[0] : coordinates;
+                let inside = false;
+                for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+                    const xi = ring[i][0], yi = ring[i][1];
+                    const xj = ring[j][0], yj = ring[j][1];
+                    const intersect = ((yi > lat) !== (yj > lat)) &&
+                        (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi);
+                    if (intersect) inside = !inside;
+                }
+                return inside;
+            }
+
+            function detectarZona(lat, lng) {
+                if (!allZonasFeatures || !allZonasFeatures.length) return null;
+                for (const f of allZonasFeatures) {
+                    const coords = f.geometry?.coordinates;
+                    if (!coords) continue;
+                    const tipo = f.geometry.type;
+                    if (tipo === 'Polygon') {
+                        if (pointInPolygon(lat, lng, coords[0])) return f.properties.name || null;
+                    } else if (tipo === 'MultiPolygon') {
+                        for (const poly of coords) {
+                            if (pointInPolygon(lat, lng, poly[0])) return f.properties.name || null;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            function detectarAP(lat, lng) {
+                if (!capas.AP) return null;
+                let apEncontrada = null;
+                capas.AP.eachLayer(layer => {
+                    if (apEncontrada) return;
+                    try {
+                        const bounds = layer.getBounds();
+                        if (bounds && bounds.contains([lat, lng])) {
+                            // verificación más precisa con pointInPolygon
+                            const geo = layer.toGeoJSON();
+                            const coords = geo.geometry?.coordinates;
+                            const tipo = geo.geometry?.type;
+                            if (tipo === 'Polygon' && pointInPolygon(lat, lng, coords[0])) {
+                                apEncontrada = geo.properties?.denominacion || geo.properties?.id_area || null;
+                            } else if (tipo === 'MultiPolygon') {
+                                for (const poly of coords) {
+                                    if (pointInPolygon(lat, lng, poly[0])) {
+                                        apEncontrada = geo.properties?.denominacion || geo.properties?.id_area || null;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    } catch(e) {}
+                });
+                return apEncontrada;
+            }
+
+            function csCercanos(lat, lng, cantidad) {
+                if (!efectoresData) return [];
+                return efectoresData
+                    .filter(f => {
+                        const tipo = (f.properties.Tipo || '').toLowerCase();
+                        const nombre = (f.properties.Centro || '').toLowerCase();
+                        // Solo centros de salud (no hospitales, no especiales)
+                        return !tipo.includes('hospital') && !tipo.includes('hpa') &&
+                               !nombre.includes('padre la monaca') &&
+                               !esNombreEspecial(nombre, tipo);
+                    })
+                    .map(f => {
+                        const [flng, flat] = f.geometry.coordinates;
+                        return {
+                            nombre: f.properties.Centro,
+                            direccion: f.properties.Direccion,
+                            lat: flat,
+                            lng: flng,
+                            dist: distanciaKm(lat, lng, flat, flng)
+                        };
+                    })
+                    .sort((a, b) => a.dist - b.dist)
+                    .slice(0, cantidad);
+            }
+
+            function mostrarPanel(lat, lng, direccionTexto) {
+                const zona = detectarZona(lat, lng);
+                const ap   = detectarAP(lat, lng);
+                const cs   = csCercanos(lat, lng, 5);
+
+                // Título
+                document.getElementById('panel-dir-titulo').textContent = direccionTexto;
+
+                // Badges zona y AP
+                const badgesEl = document.getElementById('panel-dir-badges');
+                badgesEl.innerHTML = '';
+                if (zona) {
+                    const b = document.createElement('span');
+                    b.className = 'panel-dir-badge';
+                    b.style.cssText = 'background:#FFDA63;color:#005288;';
+                    b.textContent = zona;
+                    badgesEl.appendChild(b);
+                }
+                if (ap) {
+                    const b = document.createElement('span');
+                    b.className = 'panel-dir-badge';
+                    b.style.cssText = 'background:#e8f4fb;color:#005288;';
+                    b.textContent = 'AP: ' + ap;
+                    badgesEl.appendChild(b);
+                }
+                if (!zona && !ap) {
+                    const b = document.createElement('span');
+                    b.className = 'panel-dir-badge';
+                    b.style.cssText = 'background:#f8d7da;color:#721c24;';
+                    b.textContent = 'Fuera del área municipal';
+                    badgesEl.appendChild(b);
+                }
+
+                // Lista CS cercanos
+                const csLista = document.getElementById('panel-dir-cs-lista');
+                csLista.innerHTML = '';
+                if (cs.length === 0) {
+                    csLista.innerHTML = '<div style="font-size:12px;color:#aaa;text-align:center;padding:8px;">Sin datos de centros</div>';
+                } else {
+                    cs.forEach(c => {
+                        const div = document.createElement('div');
+                        div.className = 'panel-dir-cs-item';
+                        const distStr = c.dist < 1
+                            ? `${Math.round(c.dist * 1000)} m`
+                            : `${c.dist.toFixed(1)} km`;
+                        div.innerHTML = `
+                            <span class="panel-dir-cs-nombre">${c.nombre}</span>
+                            <span class="panel-dir-cs-dist">📍 ${distStr}</span>`;
+                        // Al hacer click, centrar el mapa en ese CS
+                        div.addEventListener('click', () => {
+                            map.setView([c.lat, c.lng], 16);
+                        });
+                        csLista.appendChild(div);
+                    });
+                }
+
+                panelResult.style.display = 'flex';
+            }
+
+            function limpiar() {
+                if (markerPersona) { map.removeLayer(markerPersona); markerPersona = null; }
+                panelResult.style.display = 'none';
+                inputDir.value = '';
+                btnLimpiar.style.display = 'none';
+                msgEl.style.display = 'none';
+            }
+
+            async function buscarDireccion() {
+                const texto = inputDir.value.trim();
+                if (!texto) return;
+
+                msgEl.style.display = 'none';
+                btnBuscar.disabled = true;
+                btnBuscar.textContent = '⏳';
+
+                try {
+                    const query = encodeURIComponent(`${texto}, Córdoba, Argentina`);
+                    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${query}&countrycodes=ar`;
+                    const res = await fetch(url, { headers: { 'Accept-Language': 'es' } });
+                    const data = await res.json();
+
+                    if (!data || data.length === 0) {
+                        msgEl.textContent = 'No se encontró la dirección. Probá con otro formato.';
+                        msgEl.style.display = 'block';
+                        return;
+                    }
+
+                    const lat = parseFloat(data[0].lat);
+                    const lng = parseFloat(data[0].lon);
+                    const displayName = data[0].display_name.split(',').slice(0,3).join(',');
+
+                    // Quitar marker anterior
+                    if (markerPersona) map.removeLayer(markerPersona);
+
+                    markerPersona = L.marker([lat, lng], { icon: iconoPersona, zIndexOffset: 1000 })
+                        .addTo(map)
+                        .bindTooltip(displayName, { direction: 'top', offset: [0, -46] });
+
+                    map.setView([lat, lng], 15);
+                    btnLimpiar.style.display = 'block';
+                    mostrarPanel(lat, lng, displayName);
+
+                } catch(e) {
+                    msgEl.textContent = 'Error al buscar. Verificá tu conexión.';
+                    msgEl.style.display = 'block';
+                } finally {
+                    btnBuscar.disabled = false;
+                    btnBuscar.textContent = '🔍';
+                }
+            }
+
+            btnBuscar.addEventListener('click', buscarDireccion);
+            inputDir.addEventListener('keydown', e => { if (e.key === 'Enter') buscarDireccion(); });
+            btnLimpiar.addEventListener('click', limpiar);
+            panelClose.addEventListener('click', limpiar);
+        })();
     </script>
 
 </body>
